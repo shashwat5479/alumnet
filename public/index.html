@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AlumNet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111839;--ind:#3f37c9;--blu:#007aff;--bg:#f2f3f8;--ln:#dcdfeb;--mut:#646a85;--amb:#92400e;--ambg:#fef3c7;--grn:#15803d;--grnbg:#dcfce7}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 Figtree,system-ui,sans-serif;background:var(--bg);color:#1e202e}
+h1,h2,h3,.logo{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.025em;margin:0}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid var(--blu);outline-offset:2px}
+.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:600;cursor:pointer;background:var(--ind);color:#fff;transition:background .15s}
+.btn:hover{background:#2f28a8}.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--ln)}.btn.ghost:hover{background:var(--bg)}
+.btn:disabled{background:var(--grnbg);color:var(--grn);border-color:transparent;cursor:default}
+.btn.sm{padding:6px 12px;font-size:13.5px}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;background:#fff}
+label{display:block;font-weight:600;font-size:13.5px;margin:12px 0 4px}
+.err{color:#b91c1c;font-size:13.5px;min-height:20px;margin-top:8px}
+/* login */
+.auth{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh}
+.hero{background:var(--ink);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.hero h1{font-size:clamp(34px,4.4vw,58px);font-weight:800;line-height:1.02;max-width:11em}
+.hero p{color:#b8bdd9;max-width:30em;margin:16px 0 0}
+.path{position:relative;padding:8px 0 8px 28px;border-left:2px dashed #5a63a8;margin-left:10px;display:grid;gap:22px}
+.path div{position:relative;background:#1b2350;border-radius:12px;padding:12px 16px;max-width:340px}
+.path div:before{content:"";position:absolute;left:-37px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:var(--blu);border:3px solid var(--ink)}
+.path div:last-child:before{background:#fbbf24}
+.path small{display:block;color:#9aa1cc}.path b{font-weight:600}
+.stats{display:flex;gap:28px;color:#b8bdd9;font-size:14px}.stats b{display:block;color:#fff;font:800 26px 'Bricolage Grotesque'}
+.panel{display:flex;align-items:center;justify-content:center;padding:32px;background:#fff}
+.box{width:100%;max-width:400px}.box h2{font-size:28px;margin-bottom:4px}.box .sub{color:var(--mut);margin:0 0 18px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--bg);padding:4px;border-radius:12px}
+.seg label{margin:0;text-align:center;padding:8px;border-radius:9px;cursor:pointer;font-weight:600;color:var(--mut)}
+.seg input{position:absolute;opacity:0;width:0}.seg input:checked+span{color:var(--ink)}
+.seg label:has(input:checked){background:#fff;color:var(--ink);box-shadow:0 1px 2px #0002}
+.seg label:has(input:focus-visible){outline:3px solid var(--blu)}
+.demo{margin-top:22px;padding-top:16px;border-top:1px solid var(--ln);font-size:13.5px;color:var(--mut)}
+.demo button{background:none;border:0;color:var(--ind);font-weight:600;cursor:pointer;padding:0 8px 0 0}
+.link{background:none;border:0;color:var(--ind);font-weight:600;cursor:pointer;padding:0}
+/* shell */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:var(--ink);color:#fff;padding:24px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.logo{font-size:22px;font-weight:800;padding:0 10px}.role{color:#9aa1cc;font-size:13px;padding:0 10px 18px}
+.side button{all:unset;box-sizing:border-box;cursor:pointer;padding:10px 12px;border-radius:10px;color:#c9cde6;font-weight:500}
+.side button:hover{background:#1b2350}.side button.on{background:var(--ind);color:#fff}
+.side button:focus-visible{outline:3px solid var(--blu)}.side .out{margin-top:auto}
+main{padding:34px 40px;max-width:1100px;width:100%}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.head h1{font-size:32px;font-weight:800}.head p{margin:2px 0 0;color:var(--mut)}
+.tools{display:flex;gap:8px}.tools input{width:260px}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border:1px solid var(--ln);border-radius:16px;margin:6px 0 28px}
+.strip div{padding:18px 22px}.strip div+div{border-left:1px solid var(--ln)}
+.strip b{display:block;font:800 36px/1.1 'Bricolage Grotesque';color:var(--ink)}.strip span{color:var(--mut);font-size:14px}
+h3{font-size:18px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.card{background:#fff;border:1px solid var(--ln);border-radius:14px;padding:16px;display:flex;gap:14px}
+.card .body{flex:1;min-width:0}.card h4{margin:0;font-size:16px}.card .meta{color:var(--mut);font-size:14px}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:800 16px 'Bricolage Grotesque';color:#fff}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tag{font-size:12.5px;padding:2px 9px;border-radius:99px;background:var(--bg);color:#3b4060}
+.tag.a{background:var(--ambg);color:var(--amb)}.tag.g{background:var(--grnbg);color:var(--grn)}
+.list{display:grid;gap:10px}.row{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.row .meta{color:var(--mut);font-size:14px}
+.empty{padding:36px;text-align:center;color:var(--mut);background:#fff;border:1px dashed var(--ln);border-radius:14px}
+.tw{overflow:auto;background:#fff;border:1px solid var(--ln);border-radius:12px;max-height:68vh}
+table{border-collapse:collapse;width:100%;font-size:14px}th{position:sticky;top:0;background:var(--ink);color:#fff;text-align:left;padding:10px 12px;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--ln);white-space:nowrap}tr:hover td{background:#f8f9fd}
+.bar{display:grid;grid-template-columns:120px 1fr 40px;gap:12px;align-items:center;margin:10px 0}.bar i{display:block;height:12px;border-radius:6px;background:var(--ind)}
+.msg{max-width:560px;padding:10px 14px;border-radius:14px;background:#fff;border:1px solid var(--ln)}.msg.me{margin-left:auto;background:var(--ind);color:#fff;border-color:var(--ind)}.msg small{opacity:.7;display:block}
+.sw{position:relative;width:46px;height:26px;border-radius:99px;border:0;background:var(--ln);cursor:pointer}.sw:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s}.sw[aria-checked=true]{background:var(--grn)}.sw[aria-checked=true]:after{transform:translateX(20px)}
+dialog{border:0;border-radius:18px;padding:24px;width:min(440px,92vw)}dialog::backdrop{background:#11183980}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s}#toast.on{opacity:1}
+@media(max-width:860px){.auth{grid-template-columns:1fr}.hero{padding:32px 24px}.path{display:none}.app{grid-template-columns:1fr}
+.side{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:12px}.logo,.role{display:none}.side button{white-space:nowrap}.side .out{margin:0 0 0 auto}main{padding:22px 16px}.strip{grid-template-columns:1fr}.strip div+div{border:0;border-top:1px solid var(--ln)}.tools input{width:100%}.tools{width:100%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><div id="root"></div><dialog id="dlg"></dialog><div id="toast" role="status"></div>
+<script>
+const $ = s => document.querySelector(s), root = $('#root');
+let T = localStorage.getItem('t'), U = null, page = 'Dashboard', S = '';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const toast = t => { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.i); toast.i = setTimeout(() => e.classList.remove('on'), 2400); };
+async function api(p, body, method) {
+  const r = await fetch('/api/' + p, { method: method || (body ? 'POST' : 'GET'), headers: { 'content-type': 'application/json', authorization: 'Bearer ' + (T || '') }, body: body && JSON.stringify(body) });
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && T) { logout(); throw Error(d.error); }
+  if (!r.ok) throw Error(d.error || 'Something went wrong');
+  return d;
+}
+const logout = () => { localStorage.removeItem('t'); T = U = null; auth(); };
+const COLORS = ['#3f37c9', '#007aff', '#0f766e', '#b45309', '#be185d', '#6d28d9'];
+const av = n => `<div class="av" style="background:${COLORS[[...n].reduce((a, c) => a + c.charCodeAt(0), 0) % 6]}" aria-hidden="true">${esc(n.split(' ').map(w => w[0]).slice(0, 2).join(''))}</div>`;
+const NAV = { STUDENT: ['Dashboard', 'Find Alumni', 'My Network', 'Jobs & Internships', 'Messages', 'My Profile'], ALUMNI: ['Dashboard', 'My Profile', 'My Network', 'Mentorship', 'Jobs', 'Messages'], ADMIN: ['Dashboard', 'Students', 'Alumni', 'Reports', 'Settings'] };
+
+/* generic dialog form */
+function form(title, fields, submit, label = 'Save') {
+  const d = $('#dlg');
+  d.innerHTML = `<form method="dialog"><h2>${esc(title)}</h2>${fields.map(f => `<label for="f_${f.n}">${esc(f.l)}</label>${f.o ? `<select id="f_${f.n}" name="${f.n}">${f.o.map(o => `<option${o === f.v ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>` : `<input id="f_${f.n}" name="${f.n}" type="${f.t || 'text'}" value="${esc(f.v || '')}" autocomplete="off">`}`).join('')}<div class="err" role="alert"></div><div class="acts"><button type="button" class="btn ghost" value="x">Cancel</button><button class="btn">${label}</button></div></form>`;
+  const f = d.querySelector('form');
+  f.querySelector('.ghost').onclick = () => d.close();
+  f.onsubmit = async e => { e.preventDefault(); try { await submit(Object.fromEntries(new FormData(f))); d.close(); } catch (x) { f.querySelector('.err').textContent = x.message; } };
+  d.showModal();
+}
+
+/* ---------- auth screen ---------- */
+async function auth(mode = 'login') {
+  const pub = await fetch('/api/public').then(r => r.json()).catch(() => ({}));
+  root.innerHTML = `<div class="auth"><section class="hero"><div class="logo" style="padding:0">AlumNet</div>
+  <div><h1>Ask someone who sat where you sit.</h1><p>Students find alumni who took the same branch to the jobs they want. Alumni give back with mentorship, referrals and openings.</p></div>
+  <div class="path" aria-hidden="true"><div><b>You, 3rd year CSE</b><small>Wants to become an ML engineer</small></div><div><b>Rahul Sharma, class of 2022</b><small>AI/ML Engineer at Google</small></div></div>
+  <div class="stats"><span><b>${pub.alumni ?? '–'}</b>alumni</span><span><b>${pub.students ?? '–'}</b>students</span><span><b>${pub.cities ?? '–'}</b>cities</span></div></section>
+  <section class="panel"><div class="box" id="box"></div></section></div>`;
+  mode === 'login' ? loginForm() : regForm('STUDENT');
+}
+function loginForm() {
+  $('#box').innerHTML = `<h2>Sign in</h2><p class="sub">Choose your portal to continue.</p>
+  <form id="lf"><div class="seg" role="radiogroup" aria-label="Account type">${['STUDENT', 'ALUMNI', 'ADMIN'].map((r, i) => `<label><input type="radio" name="role" value="${r}" ${i ? '' : 'checked'}><span>${r[0] + r.slice(1).toLowerCase()}</span></label>`).join('')}</div>
+  <label for="e">Email</label><input id="e" name="email" type="email" required autocomplete="username"><label for="p">Password</label><input id="p" name="password" type="password" required autocomplete="current-password">
+  <div class="err" role="alert"></div><button class="btn" style="width:100%">Sign in</button></form>
+  <p class="sub" style="margin-top:14px">New here? <button class="link" id="go">Create an account</button></p>
+  <div class="demo">Try a demo account:<br><button data-d="student|priya@nietstudent.in|student123">Student</button><button data-d="alumni|rahul@alumni.com|alumni123">Alumni</button><button data-d="admin|admin@alumnet.com|admin123">Admin</button></div>`;
+  const f = $('#lf');
+  $('#go').onclick = () => regForm('STUDENT');
+  document.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const [r, e, p] = b.dataset.d.split('|'); f.role.value = r.toUpperCase(); f.email.value = e; f.password.value = p; });
+  f.onsubmit = async e => { e.preventDefault(); const btn = f.querySelector('.btn'); btn.disabled = true; try { T = (await api('login', Object.fromEntries(new FormData(f)))).token; localStorage.setItem('t', T); boot(); } catch (x) { f.querySelector('.err').textContent = x.message; btn.disabled = false; } };
+}
+function regForm(role) {
+  const st = role === 'STUDENT', fl = st
+    ? [['enrollment', 'Enrollment number'], ['branch', 'Branch'], ['year', 'Year', ['1st Year', '2nd Year', '3rd Year', '4th Year']], ['career_goal', 'Career goal', ['Software Engineer', 'AI/ML Engineer', 'Data Scientist', 'Web Developer', 'Product Manager']]]
+    : [['grad_year', 'Graduation year'], ['company', 'Current company'], ['job_role', 'Job role'], ['industry', 'Industry', ['Technology', 'Finance', 'Healthcare', 'Consulting', 'E-commerce', 'Education']]];
+  $('#box').innerHTML = `<h2>Create your account</h2><div class="seg" style="grid-template-columns:1fr 1fr;margin-top:12px">${['STUDENT', 'ALUMNI'].map(r => `<label><input type="radio" name="r" value="${r}" ${r === role ? 'checked' : ''}><span>${r[0] + r.slice(1).toLowerCase()}</span></label>`).join('')}</div>
+  <form id="rf"><label for="n">Full name</label><input id="n" name="name" required><label for="em">Email</label><input id="em" name="email" type="email" required>
+  ${fl.map(([n, l, o]) => `<label for="x${n}">${l}</label>${o ? `<select id="x${n}" name="${n}">${o.map(v => `<option>${v}</option>`).join('')}</select>` : `<input id="x${n}" name="${n}" required>`}`).join('')}
+  <label for="pw">Password</label><input id="pw" name="password" type="password" minlength="6" required autocomplete="new-password"><label for="cf">Confirm password</label><input id="cf" name="confirm" type="password" required autocomplete="new-password">
+  <div class="err" role="alert"></div><button class="btn" style="width:100%">Create ${st ? 'student' : 'alumni'} account</button></form><p class="sub" style="margin-top:14px"><button class="link" id="bk">Back to sign in</button></p>`;
+  document.querySelectorAll('[name=r]').forEach(r => r.onchange = () => regForm(r.value));
+  $('#bk').onclick = loginForm;
+  $('#rf').onsubmit = async e => { e.preventDefault(); const f = e.target; try { await api('register', { role, ...Object.fromEntries(new FormData(f)) }); loginForm(); toast('Account created. Sign in to continue.'); } catch (x) { f.querySelector('.err').textContent = x.message; } };
+}
+
+/* ---------- shell ---------- */
+async function boot() {
+  if (!T) return auth();
+  try { U = await api('me'); } catch { return auth(); }
+  root.innerHTML = `<div class="app"><nav class="side" aria-label="Main"><div class="logo">AlumNet</div><div class="role">${U.role[0] + U.role.slice(1).toLowerCase()} portal</div>${NAV[U.role].map(n => `<button data-p="${esc(n)}">${esc(n)}</button>`).join('')}<button class="out" id="lo">Log out</button></nav><main id="main"></main></div>`;
+  document.querySelectorAll('[data-p]').forEach(b => b.onclick = () => go(b.dataset.p));
+  $('#lo').onclick = logout; go('Dashboard');
+}
+async function go(p) {
+  page = p; S = '';
+  document.querySelectorAll('[data-p]').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+  const m = $('#main'); m.innerHTML = '<p class="meta">Loading…</p>';
+  try { m.innerHTML = await V[p](); wire(); } catch (e) { m.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+}
+const head = (t, sub, extra = '') => `<div class="head"><div><h1>${esc(t)}</h1>${sub ? `<p>${esc(sub)}</p>` : ''}</div>${extra}</div>`;
+const search = ph => `<div class="tools"><input type="search" id="q" placeholder="${ph}" aria-label="Search" value="${esc(S)}"></div>`;
+const empty = t => `<div class="empty">${esc(t)}</div>`;
+const strip = a => `<div class="strip">${a.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('')}</div>`;
+function person(u, act) {
+  const al = u.role === 'ALUMNI', done = (u.done || []).includes(act?.kind);
+  return `<article class="card">${av(u.name)}<div class="body"><h4>${esc(u.name)}</h4>
+  <div class="meta">${al ? `${esc(u.job_role)} at ${esc(u.company)}` : `${esc(u.branch)}, ${esc(u.year)}`}</div><div class="meta">${al ? `${esc(u.location)} · Class of ${esc(u.grad_year)}` : `Goal: ${esc(u.career_goal)}`}</div>
+  <div class="tags">${al && u.open_mentorship ? '<span class="tag g">Open to mentor</span>' : ''}${al && u.open_referrals ? '<span class="tag a">Gives referrals</span>' : ''}${(u.skills || []).map(s => `<span class="tag">${esc(s)}</span>`).join('')}</div>
+  ${act ? `<button class="btn sm" data-c="${u.id}" data-k="${act.kind}" ${done ? 'disabled' : ''}>${done ? act.done : act.label}</button>` : ''}</div></article>`;
+}
+async function people(role, ph, act, extra = '') {
+  const rows = await api(`people?role=${role}&q=${encodeURIComponent(S)}`);
+  return rows.length ? `<div class="grid">${rows.map(u => person(u, act)).join('')}</div>${rows[0].total > rows.length ? `<p class="meta">Showing ${rows.length} of ${rows[0].total}. Refine your search to narrow it down.</p>` : ''}` : empty('No one matches that search. Try a company, skill or city.');
+}
+function table(cols, rows) { return `<div class="tw"><table><thead><tr>${cols.map(c => `<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${cols.map(c => `<td>${esc(r[c[1]])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+const ago = d => new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+const V = {
+  async Dashboard() {
+    const h = await api('home'), n = U.name.split(' ')[0];
+    if (U.role === 'STUDENT') {
+      const r = await api('people?role=ALUMNI&rec=1&limit=6');
+      return head(`Welcome back, ${n}`, `${U.branch}, ${U.year}. Goal: ${U.career_goal}`) + strip([[h.connections, 'Connections'], [h.mentors, 'Mentors'], [h.saved, 'Saved jobs']]) + `<h3>Alumni who fit your goal</h3><div class="grid">${r.map(u => person(u, { kind: 'connect', label: 'Connect', done: 'Requested' })).join('')}</div>`;
+    }
+    if (U.role === 'ALUMNI') {
+      const r = await api('people?role=STUDENT&rec=1&limit=6');
+      return head(`Welcome back, ${n}`, `${U.job_role} at ${U.company}. Class of ${U.grad_year}`) + strip([[h.connections, 'Connections'], [h.mentors, 'Students mentored'], [h.posted, 'Jobs posted']]) + `<h3>Students looking for mentors</h3>${r.length ? `<div class="grid">${r.map(u => person(u, { kind: 'mentor', label: 'Offer mentorship', done: 'Offer sent' })).join('')}</div>` : empty('You have offered mentorship to everyone on this list.')}`;
+    }
+    return head('Admin overview', 'Platform-wide numbers at a glance') + strip([[h.students, 'Students'], [h.alumni, 'Alumni'], [h.jobs, 'Open jobs']]);
+  },
+  async 'Find Alumni'() { return head('Find alumni', 'Search by name, company, skill or city', search('Try “Google” or “Machine Learning”')) + `<div id="res">${await people('ALUMNI', '', { kind: 'connect', label: 'Connect', done: 'Requested' })}</div>`; },
+  async Mentorship() { return head('Mentorship', 'Students who are looking for a mentor', search('Search students')) + `<div id="res">${await people('STUDENT', '', { kind: 'mentor', label: 'Offer mentorship', done: 'Offer sent' })}</div>`; },
+  async 'My Network'() {
+    const n = await api('network');
+    return head('My network', 'People you have reached out to and jobs you saved') + (n.people.length ? `<div class="grid">${n.people.map(u => `<article class="card">${av(u.name)}<div class="body"><h4>${esc(u.name)}</h4><div class="meta">${u.role === 'ALUMNI' ? `${esc(u.job_role)} at ${esc(u.company)}` : `${esc(u.branch)}, goal: ${esc(u.career_goal)}`}</div><div class="tags"><span class="tag ${u.kind === 'mentor' ? 'g' : ''}">${u.kind === 'mentor' ? 'Mentorship offered' : 'Connection requested'}</span></div></div></article>`).join('')}</div>` : empty('Your network is empty. Find people and send a connection request to start.'))
+      + (n.jobs.length ? `<h3 style="margin-top:28px">Saved jobs</h3><div class="list">${n.jobs.map(j => jobRow(j, false)).join('')}</div>` : '');
+  },
+  async Jobs() { return V['Jobs & Internships'](); },
+  async 'Jobs & Internships'() {
+    const j = await api('jobs?q=' + encodeURIComponent(S)), post = U.role !== 'STUDENT';
+    return head(post ? 'Jobs' : 'Jobs and internships', post ? 'Openings you and other alumni have posted' : 'Openings shared by alumni', `<div class="tools">${search('Search roles').replace('<div class="tools">', '').replace('</div>', '')}${post ? '<button class="btn" id="post">Post a job</button>' : ''}</div>`) + `<div id="res">${j.length ? `<div class="list">${j.map(x => jobRow(x, U.role === 'STUDENT')).join('')}</div>` : empty('No jobs match. Try a different word.')}</div>`;
+  },
+  async Messages() {
+    const m = await api('messages');
+    return head('Messages', '', '<button class="btn" id="compose">New message</button>') + (m.length ? `<div class="list">${m.map(x => `<div class="msg ${x.mine ? 'me' : ''}"><small>${x.mine ? 'To ' + esc(x.to_name) : esc(x.from_name)} · ${ago(x.created_at)}</small>${esc(x.body)}</div>`).join('')}</div>` : empty('No messages yet. Start a conversation with New message.'));
+  },
+  async 'My Profile'() {
+    U = await api('me'); const al = U.role === 'ALUMNI';
+    const rows = [['Name', U.name], ['Email', U.email], ...(al ? [['Company and role', `${U.company}, ${U.job_role}`], ['Class of', U.grad_year], ['Industry', U.industry], ['Location', U.location]] : [['Enrollment', U.enrollment], ['Branch and year', `${U.branch}, ${U.year}`], ['Career goal', U.career_goal]]), ['Skills', (U.skills || []).join(', ') || 'None added yet']];
+    return head('My profile', '', '<button class="btn" id="edit">Edit profile</button>') + `<div class="card" style="gap:18px">${av(U.name)}<div class="body">${rows.map(([k, v]) => `<div class="row" style="border:0;padding:6px 0"><span class="meta" style="min-width:140px">${k}</span><span style="flex:1">${esc(v)}</span></div>`).join('')}</div></div>`;
+  },
+  async Students() { return head('Manage students', '', search('Search students')) + `<div id="res">${await adminTable('STUDENT')}</div>`; },
+  async Alumni() { return head('Manage alumni', '', search('Search alumni')) + `<div id="res">${await adminTable('ALUMNI')}</div>`; },
+  async Reports() {
+    const [h, r] = await Promise.all([api('home'), api('reports')]), mx = Math.max(...r.map(x => x.n), 1);
+    return head('Reports', 'Registrations, jobs and messages') + strip([[h.students, 'Students'], [h.alumni, 'Alumni'], [h.messages, 'Messages sent']]) + `<h3>Alumni by industry</h3>${r.map(x => `<div class="bar"><span>${esc(x.label)}</span><i style="width:${x.n / mx * 100}%"></i><b>${x.n}</b></div>`).join('')}`;
+  },
+  async Settings() {
+    const s = await api('settings');
+    return head('Settings', 'Platform-wide switches. Changes apply immediately.') + `<div class="list">${s.map(x => `<div class="row"><span>${esc(x.key)}</span><button class="sw" role="switch" aria-checked="${x.enabled}" aria-label="${esc(x.key)}" data-s="${esc(x.key)}"></button></div>`).join('')}</div>`;
+  }
+};
+const jobRow = (j, save) => `<div class="row"><div><b>${esc(j.title)}</b><div class="meta">${esc(j.company)} · ${esc(j.location)} · ${esc(j.type)}</div></div>${save ? `<button class="btn sm ghost" data-j="${j.id}" ${j.saved ? 'disabled' : ''}>${j.saved ? 'Saved' : 'Save job'}</button>` : ''}</div>`;
+async function adminTable(role) {
+  const r = await api(`people?role=${role}&limit=500&q=${encodeURIComponent(S)}`);
+  if (!r.length) return empty('No matches.');
+  return table(role === 'STUDENT' ? [['ID', 'id'], ['Name', 'name'], ['Email', 'email'], ['Enrollment', 'enrollment'], ['Branch', 'branch'], ['Year', 'year'], ['Career goal', 'career_goal']] : [['ID', 'id'], ['Name', 'name'], ['Email', 'email'], ['Company', 'company'], ['Role', 'job_role'], ['Class', 'grad_year'], ['Industry', 'industry'], ['Location', 'location']], r);
+}
+
+/* ---------- events ---------- */
+function wire() {
+  const q = $('#q');
+  if (q) { let t; q.oninput = () => { clearTimeout(t); t = setTimeout(async () => { S = q.value.trim(); const keep = q.selectionStart; const r = $('#res'); const cur = page; const html = await V[cur](); if (cur !== page) return; const d = document.createElement('div'); d.innerHTML = html; r.innerHTML = d.querySelector('#res').innerHTML; wire(); }, 250); }; }
+  document.querySelectorAll('[data-c]').forEach(b => b.onclick = async () => { b.disabled = true; try { await api('connect', { targetId: +b.dataset.c, kind: b.dataset.k }); b.textContent = b.dataset.k === 'mentor' ? 'Offer sent' : 'Requested'; toast(b.dataset.k === 'mentor' ? 'Mentorship offer sent' : 'Connection requested'); } catch (e) { b.disabled = false; toast(e.message); } });
+  document.querySelectorAll('[data-j]').forEach(b => b.onclick = async () => { b.disabled = true; await api('jobs/save', { jobId: +b.dataset.j }); b.textContent = 'Saved'; toast('Job saved'); });
+  document.querySelectorAll('[data-s]').forEach(b => b.onclick = async () => { await api('settings', { key: b.dataset.s }); go('Settings'); });
+  const on = (id, f) => { const e = $(id); if (e) e.onclick = f; };
+  on('#compose', () => form('New message', [{ n: 'to', l: 'To (name or email)' }, { n: 'body', l: 'Message' }], async d => { await api('messages', d); toast('Message sent'); go('Messages'); }, 'Send message'));
+  on('#post', () => form('Post a job', [{ n: 'title', l: 'Role' }, { n: 'company', l: 'Company', v: U.company }, { n: 'location', l: 'Location' }, { n: 'type', l: 'Type', o: ['Full-time', 'Internship'] }], async d => { await api('jobs', d); toast('Job posted'); go(page); }, 'Post job'));
+  on('#edit', () => { const al = U.role === 'ALUMNI'; form('Edit profile', [{ n: 'name', l: 'Name', v: U.name }, { n: 'email', l: 'Email', v: U.email, t: 'email' }, ...(al ? [{ n: 'job_role', l: 'Job role', v: U.job_role }, { n: 'company', l: 'Company', v: U.company }, { n: 'location', l: 'Location', v: U.location }] : [{ n: 'career_goal', l: 'Career goal', v: U.career_goal }]), { n: 'skills', l: 'Skills (comma separated)', v: (U.skills || []).join(', ') }], async d => { await api('me', d, 'PATCH'); toast('Profile saved'); go('My Profile'); }); });
+}
+boot();
+</script></body></html>
