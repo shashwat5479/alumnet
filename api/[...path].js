@@ -21,7 +21,7 @@ const clean = v => (typeof v === 'string' ? v.trim().slice(0, 200) : undefined) 
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 module.exports = async (req, res) => {
-  const r = [].concat(req.query.path || []).join('/'), m = req.method, b = req.body || {}, Q = req.query;
+     const r = new URL(req.url, 'http://x').pathname.replace(/^\/api\//, '').replace(/\/+$/, ''), m = req.method, b = req.body || {}, Q = req.query;
   const out = (c, d) => res.status(c).json(d);
   try {
     // ---------- public ----------
